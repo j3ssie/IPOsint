@@ -12,11 +12,12 @@ class Hurricane():
 		self.options = options
 		core.print_banner("Starting scrapping IP from Hurricane")
 		core.install_webdrive()
-		try:
-			self.initial()
-		except:
-			core.print_bad("Something wrong with this module")
-			# print("")
+		self.initial()
+		# try:
+		# 	self.initial()
+		# except:
+		# 	core.print_bad("Something wrong with this module")
+		# 	# print("")
 
 	def initial(self):
 		real_data = self.get_real_content()
@@ -45,11 +46,12 @@ class Hurricane():
 
 		options = Options()
 		options.add_argument("--headless")
+		options.add_argument("--no-sandbox")
 
 		# your executable path is wherever you saved the chrome webdriver
 		chromedriver = self.options['cwd'] + '/modules/chromedriver'
 		browser = webdriver.Chrome(executable_path=chromedriver, options=options)
-		 
+		
 		# url = "https://www.duckduckgo.com"
 		url = "https://bgp.he.net/search?search[search]={0}&commit=Search".format(target)
 		browser.get(url)

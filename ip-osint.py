@@ -12,11 +12,13 @@ from modules import core
 from modules import whois
 from modules import ripe
 from modules import arin
-try:
-	from modules import hurricane
-except:
-	core.print_bad("You're missing chrome webdrive")
-	core.install_webdrive()
+from modules import hurricane
+
+# try:
+# 	from modules import hurricane
+# except:
+# 	core.print_bad("You're missing chrome webdrive")
+# 	core.install_webdrive()
 
 
 

@@ -45,7 +45,6 @@ def install_webdrive():
 		url += "chromedriver_mac64.zip"
 	elif 'Win' in os_check:
 		url += "chromedriver_win32.zip"
-		pass
 	elif 'Linux' in os_check:
 		url += "chromedriver_linux64.zip"
 
