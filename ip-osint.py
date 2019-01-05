@@ -14,12 +14,6 @@ from modules import ripe
 from modules import arin
 from modules import hurricane
 
-# try:
-# 	from modules import hurricane
-# except:
-# 	core.print_bad("You're missing chrome webdrive")
-# 	core.install_webdrive()
-
 
 
 # Console colors
@@ -86,13 +80,13 @@ def parsing_argument(args):
 				targetlist = ts.read().splitlines()
 			
 			for target in targetlist:
+				options['target'] = target
 				single_target()
 				print("{2}>++('> >++('{1}>{2} Target done: {0} {1}<{2}')++< <')++<".format(target, P, G))
 
 	else:
 		single_target()
 
-	# single_target()
 
 	really_uniq()
 
@@ -111,7 +105,7 @@ def really_uniq():
 	with open(options['output'], 'r+') as o:
 		output = o.read().splitlines()
 
-	
+	output = core.strip_private_ip(output)
 	with open(options['output'], 'w+') as o:
 		for item in set(output):
 			o.write(item + "\n")

@@ -23,6 +23,18 @@ def grep_the_IP(data, cird_regex):
 	    print_info(m.group())
 	return ips
 
+#strip out the private IP
+def strip_private_ip(data):
+	new_data = []
+	for item in data:
+		try:
+			if not ipaddress.ip_address(item).is_private:
+				new_data.append(item)
+		except:
+			new_data.append(item)
+	
+	return new_data
+
 #write the list of data to a file
 def write_to_output(data, output_file):
 	with open(output_file, 'a+') as o:
