@@ -77,6 +77,7 @@ def parsing_argument(args):
 	else:
 		options['output'] = args.target
 
+
 	if args.target_list:
 		if os.path.exists(args.target_list):
 			with open(args.target_list, 'r+') as ts:
@@ -123,7 +124,7 @@ def main():
 	cowsay()
 	parser = argparse.ArgumentParser(description="Discovery IP Space of the target")
 	parser.add_argument('-t','--target' , action='store', dest='target', help='target')
-	parser.add_argument('-T','--target_list' , action='store', dest='targetlist', help='list of target')
+	parser.add_argument('-T','--target_list' , action='store', dest='target_list', help='list of target')
 	parser.add_argument('-o','--output' , action='store', dest='output', help='output')
 	parser.add_argument('--update', action='store_true', help='update lastest from git')
 

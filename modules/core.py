@@ -30,9 +30,13 @@ def write_to_output(data, output_file):
 			o.write(item + "\n")
 
 def install_webdrive():
-	print("Download chrome headless ")
 	current_path = os.path.dirname(os.path.realpath(__file__))
+	chromedrive_check = os.path.isfile(current_path + "/chromedriver")
 
+	if chromedrive_check:
+		return
+
+	print("Download chrome headless ")
 	# print(current_path)
 	url = "https://chromedriver.storage.googleapis.com/2.45/"
 
