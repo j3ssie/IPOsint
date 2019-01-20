@@ -4,15 +4,14 @@ import os, sys, glob
 import argparse
 from pprint import pprint
 
-# from core import execute
-# from core import utils
-
 # # import modules 
 from modules import core
 from modules import whois
 from modules import ripe
 from modules import arin
 from modules import hurricane
+from modules import cencys
+from modules import securitytrails
 
 
 
@@ -95,6 +94,8 @@ def single_target():
 	ripe.Ripe(options)
 	arin.Arin(options)
 	hurricane.Hurricane(options)
+	cencys.Censys(options)
+	securitytrails.SecurityTrails(options)
 
 
 
@@ -129,8 +130,7 @@ def main():
 		# help_message()
 		sys.exit(0)
 
-	# if args.list_module:
-	# 	list_module()
+	core.install_webdrive()
 	if args.update:
 		update()
 

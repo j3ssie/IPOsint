@@ -73,6 +73,13 @@ def install_webdrive():
 
 	os.chmod(current_path + "/chromedriver", 0o775)
 
+def false_positive(ip):
+	#some IP are just example on some resouces
+	black_list = ['141.212.120.90']
+	if ip in black_list:
+		return True
+
+	return False
 
 
 

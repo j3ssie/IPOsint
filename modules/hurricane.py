@@ -11,13 +11,7 @@ class Hurricane():
 	def __init__(self, options):
 		self.options = options
 		core.print_banner("Starting scrapping IP from Hurricane")
-		core.install_webdrive()
 		self.initial()
-		# try:
-		# 	self.initial()
-		# except:
-		# 	core.print_bad("Something wrong with this module")
-		# 	# print("")
 
 	def initial(self):
 		real_data = self.get_real_content()

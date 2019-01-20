@@ -23,6 +23,8 @@ pip3 install -r requirement.txt
   * [Ripe](https://apps.db.ripe.net/)
   * [Arin](https://whois.arin.net/ui/query.do)
   * [Hurricane](https://bgp.he.net/)
+  * [Censys](https://censys.io/)
+  * [securitytrails](https://securitytrails.com/)
 
 
 # Disclaimer
