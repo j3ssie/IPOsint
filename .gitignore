@@ -1,7 +1,10 @@
 .DS_STORE
 
 #
+modules/__pycache__/
 output/*
+
+
 
 #chromedriver
 modules/chromedriver*

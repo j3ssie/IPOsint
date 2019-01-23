@@ -1,13 +1,13 @@
-IPSpace
+IPOsint
 ============
 Discovery IP Address space of the target
 
-# What is IPSpace?
-IPSpace allows you to discover IP Address of the target from a great resource without register or any API key
+# What is IPOsint?
+IPOsint allows you to discover IP Address of the target from a great resource without register or any API key
 
 # Installation
 ```
-git clone https://github.com/j3ssie/IPSpace
+git clone https://github.com/j3ssie/IPOsint
 pip3 install -r requirement.txt
 ```
 
