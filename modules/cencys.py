@@ -3,8 +3,7 @@ import requests
 import ssl
 import socket
 import hashlib
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from bs4 import BeautifulSoup
 
 from . import core
 
@@ -42,25 +41,42 @@ class Censys():
         target = self.options['target']
 
         cert_fin = self.get_cert_fingerprint(target)
-        # print(cert_fin)
-        options = Options()
-        options.add_argument("--headless")
-        options.add_argument("--no-sandbox")
-
-        # your executable path is wherever you saved the chrome webdriver
-        chromedriver = self.options['cwd'] + '/modules/chromedriver'
-        browser = webdriver.Chrome(executable_path=chromedriver, options=options)
-        
-
         url = "https://censys.io/ipv4?q={0}".format(cert_fin)
-        browser.get(url)
+        response = core.open_with_chrome(url)
 
-        #wait for get the right response
-        time.sleep(5)
-        response = browser.page_source
-        browser.close()
+        # print(cert_fin)
+        final_res = self.get_all_page(url, response)
 
-        return response
+        return final_res
+
+    #check if more page or not
+    def get_all_page(self, url, response):
+        more_response = response
+
+        #parsing
+        soup = BeautifulSoup(response, 'lxml')
+        divs = soup.find_all('div')
+
+        for div in divs:
+            try:
+                if 'SearchResultSectionHeader__subheading' in div['class']:
+                    raw_data = div.text
+            except:
+                pass 
+
+        #should return like '1/4'
+        num_page = raw_data.split("Page: ")[1].split("\n")[0]
+        current = int(num_page.split('/')[0])
+        total = int(num_page.split('/')[1])
+
+        if current < total:
+            for i in range(current, total):
+                page_url = url + "&page=" + str(i + 1)
+                # print(page_url)
+                more_response += core.open_with_chrome(page_url)
+
+        return more_response
+
 
     #get cert fingerprint
     def get_cert_fingerprint(self, addr):

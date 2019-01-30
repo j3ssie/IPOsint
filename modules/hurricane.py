@@ -37,23 +37,8 @@ class Hurricane():
 	#doing a logic based on some web site to get the real content
 	def get_real_content(self):
 		target = self.options['target']
-
-		options = Options()
-		options.add_argument("--headless")
-		options.add_argument("--no-sandbox")
-
-		# your executable path is wherever you saved the chrome webdriver
-		chromedriver = self.options['cwd'] + '/modules/chromedriver'
-		browser = webdriver.Chrome(executable_path=chromedriver, options=options)
-		
-		# url = "https://www.duckduckgo.com"
 		url = "https://bgp.he.net/search?search[search]={0}&commit=Search".format(target)
-		browser.get(url)
-
-		#wait for get the right response
-		time.sleep(5)
-		response = browser.page_source
-		browser.close()
+		response = core.open_with_chrome(url)
 
 		return response
 

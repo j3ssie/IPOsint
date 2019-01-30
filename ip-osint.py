@@ -120,7 +120,7 @@ def update():
 def main():
 	cowsay()
 	parser = argparse.ArgumentParser(description="Discovery IP Space of the target")
-	parser.add_argument('-t','--target' , action='store', dest='target', help='target')
+	parser.add_argument('-t','--target' , action='store', dest='target', help='type company name gona give you better result')
 	parser.add_argument('-T','--target_list' , action='store', dest='target_list', help='list of target')
 	parser.add_argument('-o','--output' , action='store', dest='output', help='output')
 	parser.add_argument('--update', action='store_true', help='update lastest from git')
