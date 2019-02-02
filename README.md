@@ -8,7 +8,7 @@ IPOsint allows you to discover IP Address of the target from a great resource wi
 # Installation
 ```
 git clone https://github.com/j3ssie/IPOsint
-pip3 install -r requirement.txt
+pip3 install -r requirements.txt
 ```
 
 # How to use
