@@ -82,6 +82,7 @@ def open_with_chrome(url, delay=5):
     options = Options()
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
+    options.add_argument("--ignore-certificate-errors")
 
     current_path = os.path.dirname(os.path.realpath(__file__))
     chromedrive_check = os.path.isfile(current_path + "/chromedriver")

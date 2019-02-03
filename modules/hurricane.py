@@ -11,7 +11,12 @@ class Hurricane():
 	def __init__(self, options):
 		self.options = options
 		core.print_banner("Starting scrapping IP from Hurricane")
-		self.initial()
+		try:
+			self.initial()
+		except:
+			core.print_bad("Some thing wrong with Hurricane module")
+
+
 
 	def initial(self):
 		real_data = self.get_real_content()
@@ -38,8 +43,8 @@ class Hurricane():
 	def get_real_content(self):
 		target = self.options['target']
 		url = "https://bgp.he.net/search?search[search]={0}&commit=Search".format(target)
+		# print(url)
 		response = core.open_with_chrome(url)
-
 		return response
 
 
