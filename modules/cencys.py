@@ -39,10 +39,20 @@ class Censys():
     #doing a logic based on some web site to get the real content
     def get_real_content(self):
         target = self.options['target']
+        try:
+            cert_fin = self.get_cert_fingerprint(target)
+        except:
+            core.print_bad("Your target seem doesn't run on SSL")
+            return ''
 
-        cert_fin = self.get_cert_fingerprint(target)
         url = "https://censys.io/ipv4?q={0}".format(cert_fin)
+        core.print_verbose(url, self.options)
+
         response = core.open_with_chrome(url)
+
+        false_positive = 'Censys only allows 10 search queries'
+        if false_positive in response:
+            core.print_bad("You're seem to be block from Censys. Please try to run this tool via Proxy")
 
         # print(cert_fin)
         final_res = self.get_all_page(url, response)
@@ -57,23 +67,29 @@ class Censys():
         soup = BeautifulSoup(response, 'lxml')
         divs = soup.find_all('div')
 
+
         for div in divs:
             try:
                 if 'SearchResultSectionHeader__subheading' in div['class']:
                     raw_data = div.text
             except:
                 pass 
+                
 
-        #should return like '1/4'
-        num_page = raw_data.split("Page: ")[1].split("\n")[0]
-        current = int(num_page.split('/')[0])
-        total = int(num_page.split('/')[1])
+        #check if there is more than 1 page or not
+        try:
+            #should return like '1/4'
+            num_page = raw_data.split("Page: ")[1].split("\n")[0]
+            current = int(num_page.split('/')[0])
+            total = int(num_page.split('/')[1])
 
-        if current < total:
-            for i in range(current, total):
-                page_url = url + "&page=" + str(i + 1)
-                # print(page_url)
-                more_response += core.open_with_chrome(page_url)
+            if current < total:
+                for i in range(current, total):
+                    page_url = url + "&page=" + str(i + 1)
+                    core.print_verbose(page_url, self.options)
+                    more_response += core.open_with_chrome(page_url)
+        except:
+            return response
 
         return more_response
 

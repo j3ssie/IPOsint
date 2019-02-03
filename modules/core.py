@@ -126,10 +126,16 @@ C = '\033[1;36m'  # cyan
 GR = '\033[1;37m'  # gray
 colors = [G,R,B,P,C,O,GR]
 
-info = '{0}[*]{1} '.format(B,W)
-ques =  '{0}[?]{1} '.format(C,W)
-bad = '{0}[-]{1} '.format(R,W)
-good = '{0}[+]{1} '.format(G,W)
+info = '{0}[*]{1} '.format(B,GR)
+ques =  '{0}[?]{1} '.format(C,GR)
+bad = '{0}[-]{1} '.format(R,GR)
+good = '{0}[+]{1} '.format(G,GR)
+
+verbose = '{1}[{0}VERBOSE{1}] '.format(G,GR)
+
+def print_verbose(text, options):
+    if options['verbose']:
+        print(verbose + text)
 
 def print_banner(text):
     print('{1}--~~~=:>[ {2}{0}{1} ]>'.format(text, G, C))

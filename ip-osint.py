@@ -42,6 +42,7 @@ current_path = os.path.dirname(os.path.realpath(__file__))
 
 options = {
 	'target' : '',
+	'verbose' : False,
 	'cwd' : current_path,
 	'cidr_regex' : "((\d){1,3}\.){3}(\d){1,3}(\/(\d){1,3})?",
 	# gonna match these: 1.2.3.4 - 5.6.7.8
@@ -66,6 +67,9 @@ def cowsay():
 def parsing_argument(args):
 	if args.target:
 		options['target'] = args.target
+
+	if args.verbose:
+		options['verbose'] = True
 
 	if args.output:
 		options['output'] = args.output
@@ -124,6 +128,7 @@ def main():
 	parser.add_argument('-T','--target_list' , action='store', dest='target_list', help='list of target')
 	parser.add_argument('-o','--output' , action='store', dest='output', help='output')
 	parser.add_argument('--update', action='store_true', help='update lastest from git')
+	parser.add_argument('-v', '--verbose', action='store_true', help='turn on verbose message')
 
 	args = parser.parse_args()
 	if len(sys.argv) == 1:

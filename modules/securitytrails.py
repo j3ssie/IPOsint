@@ -39,6 +39,7 @@ class SecurityTrails():
     def get_real_content(self):
         target = self.options['target']
         url = "https://securitytrails.com/domain/{0}/history/a".format(target)
+        core.print_verbose(url, self.options)
         response = core.open_with_chrome(url)
 
         return response

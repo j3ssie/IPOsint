@@ -43,7 +43,7 @@ class Hurricane():
 	def get_real_content(self):
 		target = self.options['target']
 		url = "https://bgp.he.net/search?search[search]={0}&commit=Search".format(target)
-		# print(url)
+		core.print_verbose(url, self.options)
 		response = core.open_with_chrome(url)
 		return response
 
