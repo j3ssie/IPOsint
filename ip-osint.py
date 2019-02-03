@@ -118,7 +118,7 @@ def really_uniq():
 	core.check_output(options['output'])
 
 def update():
-	execute.run1('git fetch --all && git reset --hard origin/master')
+	os.system('git fetch --all && git reset --hard origin/master')
 	sys.exit(0)
 
 def main():
