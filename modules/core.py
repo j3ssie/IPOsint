@@ -46,8 +46,13 @@ def write_to_output(data, output_file):
             o.write(item + "\n")
 
 def install_webdrive():
+    os_check = platform.platform()
+
+    chromedriver_file = "/chromedriver"
+    if 'Win' in os_check:
+        chromedriver_file += ".exe"
     current_path = os.path.dirname(os.path.realpath(__file__))
-    chromedrive_check = os.path.isfile(current_path + "/chromedriver")
+    chromedrive_check = os.path.isfile(current_path + chromedriver_file)
 
     if chromedrive_check:
         return
@@ -56,14 +61,12 @@ def install_webdrive():
     # print(current_path)
     url = "https://chromedriver.storage.googleapis.com/2.45/"
 
-    os_check = platform.platform()
     if 'Darwin' in os_check:
         url += "chromedriver_mac64.zip"
     elif 'Win' in os_check:
         url += "chromedriver_win32.zip"
     elif 'Linux' in os_check:
         url += "chromedriver_linux64.zip"
-
     else:
         url += "chromedriver_linux64.zip"
 
@@ -74,24 +77,30 @@ def install_webdrive():
         z = zipfile.ZipFile(f)
         for name in z.namelist():
             z.extract(name, current_path)
-
-    os.chmod(current_path + "/chromedriver", 0o775)
+    if 'Win' not in os_check:
+        os.chmod(current_path + "/chromedriver", 0o775)
 
 ##open url with chromedriver
 def open_with_chrome(url, delay=5):
+    os_check = platform.platform()
+
+    chromedriver_file = "/chromedriver"
+    if 'Win' in os_check:
+        chromedriver_file += ".exe"
+
     options = Options()
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--ignore-certificate-errors")
 
     current_path = os.path.dirname(os.path.realpath(__file__))
-    chromedrive_check = os.path.isfile(current_path + "/chromedriver")
+    chromedrive_check = os.path.isfile(current_path + chromedriver_file)
     if not chromedrive_check:
         raise ValueError("Some thing wrong with chromedriver path")
 
-    chromedriver = current_path + '/chromedriver'
+    chromedriver = current_path + chromedriver_file
     browser = webdriver.Chrome(executable_path=chromedriver, options=options)
-    
+
 
     browser.get(url)
 
@@ -105,7 +114,7 @@ def open_with_chrome(url, delay=5):
 
 
 def false_positive(ip):
-    #some IP are just example on some resouces
+    #some IP are just example on some resources
     black_list = ['141.212.120.90']
     if ip in black_list:
         return True
