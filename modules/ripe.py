@@ -8,7 +8,7 @@ class Ripe():
 	"""docstring for Whois"""
 	def __init__(self, options):
 		self.options = options
-		core.print_banner("Starting scrapping IP from Ripe")
+		core.print_banner("Starting scraping IP from Ripe")
 		self.initial()
 
 	def initial(self):

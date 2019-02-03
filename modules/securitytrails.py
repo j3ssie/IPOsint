@@ -10,7 +10,7 @@ class SecurityTrails():
     """docstring for Whois"""
     def __init__(self, options):
         self.options = options
-        core.print_banner("Starting scrapping IP from SecurityTrails")
+        core.print_banner("Starting scraping IP from SecurityTrails")
         core.install_webdrive()
         self.initial()
 

@@ -10,7 +10,7 @@ class Hurricane():
 	"""docstring for Whois"""
 	def __init__(self, options):
 		self.options = options
-		core.print_banner("Starting scrapping IP from Hurricane")
+		core.print_banner("Starting scraping IP from Hurricane")
 		try:
 			self.initial()
 		except:

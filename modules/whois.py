@@ -8,7 +8,7 @@ class Whois():
 	"""docstring for Whois"""
 	def __init__(self, options):
 		self.options = options
-		core.print_banner("Starting scrapping IP from Whois")
+		core.print_banner("Starting scraping IP from Whois")
 		self.initial()
 
 	def initial(self):

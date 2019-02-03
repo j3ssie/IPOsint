@@ -12,7 +12,7 @@ class Censys():
     """docstring for Whois"""
     def __init__(self, options):
         self.options = options
-        core.print_banner("Starting scrapping IP from Censys")
+        core.print_banner("Starting scraping IP from Censys")
         self.initial()
 
     def initial(self):
