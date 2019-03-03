@@ -29,7 +29,7 @@ colors = [G,R,B,P,C,O,GR]
 
 
 #############
-# IPSpace
+# IPOsint
 #############
 
 __author__ = '@j3ssiejjj'
