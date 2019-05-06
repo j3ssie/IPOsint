@@ -1,4 +1,6 @@
-import re, os, time
+import re
+import os
+import time
 import ipaddress
 import platform
 import requests
@@ -18,6 +20,8 @@ def get_IP_from_range(start, end):
     return ips
 
 #just grep the IP address
+
+
 def grep_the_IP(data, cird_regex):
     ips = []
     p = re.compile(cird_regex)
@@ -28,6 +32,8 @@ def grep_the_IP(data, cird_regex):
     return ips
 
 #strip out the private IP
+
+
 def strip_private_ip(data):
     new_data = []
     for item in data:
@@ -36,14 +42,17 @@ def strip_private_ip(data):
                 new_data.append(item)
         except:
             new_data.append(item)
-    
+
     return new_data
 
 #write the list of data to a file
+
+
 def write_to_output(data, output_file):
     with open(output_file, 'a+') as o:
         for item in set(data):
             o.write(item + "\n")
+
 
 def install_webdrive():
     current_path = os.path.dirname(os.path.realpath(__file__))
@@ -54,7 +63,7 @@ def install_webdrive():
 
     print("Download chrome headless ")
     # print(current_path)
-    url = "https://chromedriver.storage.googleapis.com/2.45/"
+    url = "https://chromedriver.storage.googleapis.com/74.0.3729.6/"
 
     os_check = platform.platform()
     if 'Darwin' in os_check:
@@ -78,6 +87,8 @@ def install_webdrive():
     os.chmod(current_path + "/chromedriver", 0o775)
 
 ##open url with chromedriver
+
+
 def open_with_chrome(url, delay=5):
     options = Options()
     options.add_argument("--headless")
@@ -91,7 +102,6 @@ def open_with_chrome(url, delay=5):
 
     chromedriver = current_path + '/chromedriver'
     browser = webdriver.Chrome(executable_path=chromedriver, options=options)
-    
 
     browser.get(url)
 
@@ -101,7 +111,6 @@ def open_with_chrome(url, delay=5):
     browser.close()
 
     return response
-
 
 
 def false_positive(ip):
@@ -115,7 +124,7 @@ def false_positive(ip):
 
 ######## print beautify
 # Console colors
-W = '\033[1;0m'   # white 
+W = '\033[1;0m'   # white
 R = '\033[1;31m'  # red
 G = '\033[1;32m'  # green
 O = '\033[1;33m'  # orange
@@ -124,33 +133,40 @@ Y = '\033[1;93m'  # yellow
 P = '\033[1;35m'  # purple
 C = '\033[1;36m'  # cyan
 GR = '\033[1;37m'  # gray
-colors = [G,R,B,P,C,O,GR]
+colors = [G, R, B, P, C, O, GR]
 
-info = '{0}[*]{1} '.format(B,GR)
-ques =  '{0}[?]{1} '.format(C,GR)
-bad = '{0}[-]{1} '.format(R,GR)
-good = '{0}[+]{1} '.format(G,GR)
+info = '{0}[*]{1} '.format(B, GR)
+ques = '{0}[?]{1} '.format(C, GR)
+bad = '{0}[-]{1} '.format(R, GR)
+good = '{0}[+]{1} '.format(G, GR)
 
-verbose = '{1}[{0}VERBOSE{1}] '.format(G,GR)
+verbose = '{1}[{0}VERBOSE{1}] '.format(G, GR)
+
 
 def print_verbose(text, options):
     if options['verbose']:
         print(verbose + text)
 
+
 def print_banner(text):
     print('{1}--~~~=:>[ {2}{0}{1} ]>'.format(text, G, C))
+
 
 def print_info(text):
     print(info + text)
 
+
 def print_ques(text):
     print(ques + text)
+
 
 def print_good(text):
     print(good + text)
 
+
 def print_bad(text):
     print(bad + text)
+
 
 def check_output(output):
     print('{1}--==[ Check the output: {2}{0}'.format(output, G, P))
