@@ -4,8 +4,10 @@ import time
 import ipaddress
 import platform
 import requests
+import shutil
 import zipfile
-
+from urllib.parse import urlparse
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -54,30 +56,87 @@ def write_to_output(data, output_file):
             o.write(item + "\n")
 
 
+# just beatiful soup the html
+def just_soup(html):
+    soup = BeautifulSoup(html, "lxml")
+    return soup
+
+# Possible paths for Google Chrome on porpular OS
+chrome_paths = [
+    "/usr/bin/chromium",
+    "/usr/bin/google-chrome-stable",
+    "/usr/bin/google-chrome",
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "/Applications/Chromium.app/Contents/MacOS/Chromium",
+    "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+]
+
+
+def get_chrome_binary():
+    for chrome_binary in chrome_paths:
+        if os.path.isfile(chrome_binary):
+            return chrome_binary
+
+    print_bad("Not found Chrome binary on your system")
+
+
+# get version of your chrome
+def get_chrome_version():
+    chrome_binary = get_chrome_binary()
+    chrome_version = os.popen(
+        '"{0}" -version'.format(chrome_binary)).read().lower()
+    chrome_app = os.path.basename(os.path.normpath(chrome_binary)).lower()
+    # just get some main release
+    version = chrome_version.split(chrome_app)[1].strip().split(' ')[0] 
+    relative_version = '.'.join(version.split('.')[:2])
+    return relative_version
+
+
 def install_webdrive():
     current_path = os.path.dirname(os.path.realpath(__file__))
-    chromedrive_check = os.path.isfile(current_path + "/chromedriver")
+    chromedrive_check = shutil.which(current_path + "/chromedriver")
 
     if chromedrive_check:
+        return current_path + "/chromedriver"
+
+    print_info("Download chromedriver")
+    relative_version = get_chrome_version()
+
+    if float(relative_version) < 73:
+        print_info("Unsupport Chromium version support detected: {0}".format(relative_version))
+        print_bad("You need to update your Chromium.(e.g: sudo apt install chromium -y)")
         return
 
-    print("Download chrome headless ")
-    # print(current_path)
-    url = "https://chromedriver.storage.googleapis.com/74.0.3729.6/"
+    chrome_driver_url = 'https://sites.google.com/a/chromium.org/chromedriver/downloads'
+    # predefine download url
+    download_url = 'https://chromedriver.storage.googleapis.com/index.html?path=74.0.3729.6/'
+    r = requests.get(chrome_driver_url, allow_redirects=True)
+    if r.status_code == 200:
+        soup = just_soup(r.text)
+        lis = soup.find_all("li")
+        for li in lis:
+            if 'If you are using Chrome version' in li.text:
+                if relative_version in li.text:
+                    download_url = li.a.get('href')
 
+    parsed_url = urlparse(download_url)
+    zip_chromdriver = parsed_url.scheme + "://" + parsed_url.hostname + \
+        "/" + parsed_url.query.split('=')[1]
+    
     os_check = platform.platform()
     if 'Darwin' in os_check:
-        url += "chromedriver_mac64.zip"
+        zip_chromdriver += "chromedriver_mac64.zip"
     elif 'Win' in os_check:
-        url += "chromedriver_win32.zip"
+        zip_chromdriver += "chromedriver_win32.zip"
     elif 'Linux' in os_check:
-        url += "chromedriver_linux64.zip"
-
+        zip_chromdriver += "chromedriver_linux64.zip"
     else:
-        url += "chromedriver_linux64.zip"
+        zip_chromdriver += "chromedriver_linux64.zip"
 
-    r = requests.get(url, allow_redirects=True)
-    open(current_path + "/chromedriver.zip", 'wb').write(r.content)
+    # print_info("Download: {0}".format(zip_chromdriver))
+    r3 = requests.get(zip_chromdriver, allow_redirects=True)
+
+    open(current_path + "/chromedriver.zip", 'wb').write(r3.content)
 
     with open(current_path + '/chromedriver.zip', 'rb') as f:
         z = zipfile.ZipFile(f)
@@ -85,6 +144,9 @@ def install_webdrive():
             z.extract(name, current_path)
 
     os.chmod(current_path + "/chromedriver", 0o775)
+    if not shutil.which(current_path + "/chromedriver"):
+        print_bad("Some thing wrong with chromedriver")
+        sys.exit(-1)
 
 ##open url with chromedriver
 
